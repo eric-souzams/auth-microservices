@@ -1,0 +1,11 @@
+cards:
+  msg: "Welcome to the Bank Cards Default application"
+  build-version: 3
+  mailDetails:
+    hostName: "default-cards@google.com"
+    port: 9002
+    from: "default-cards@google.com"
+    subject: "Your Card Details from Bank Default Environment"
+  activeBranches[0]: "Mumbai"
+  activeBranches[1]: "London"
+  activeBranches[2]: "Washington"

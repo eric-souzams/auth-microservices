@@ -1,0 +1,11 @@
+loans:
+  msg: "Welcome to the Bank Loans Prod application"
+  build-version: 1
+  mailDetails:
+    hostName: "prod-loans@google.com"
+    port: 9011
+    from: "prod-loans@google.com"
+    subject: "Your Loan Details from Bank Prod Environment"
+  activeBranches[0]: "Hyderabad"
+  activeBranches[1]: "Paris"
+  activeBranches[2]: "NewYork"

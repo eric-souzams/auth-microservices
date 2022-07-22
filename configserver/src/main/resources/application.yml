@@ -1,0 +1,50 @@
+server:
+  port: 8071
+
+encrypt:
+  key: "$2a$10$45lbRi96D1asNtB1miexo9IKwV6Erotr7nxEfPs46SRlkYO9W"
+
+spring:
+  application:
+    name: configserver
+  profiles:
+    active: git
+  cloud:
+    config:
+      server:
+        git:
+          clone-on-start: true
+          uri: https://github.com/eric-souzams/sc-config-server
+          default-label: auth
+          search-paths:
+            - '*'
+
+management:
+  endpoints:
+    enabled-by-default: true
+    web:
+      exposure:
+        include: "*"
+
+#server:
+#  port: 8071
+#
+#spring:
+#  application:
+#    name: configserver
+#  profiles:
+#    active: git
+##    active: native
+#
+#  cloud:
+#    config:
+#      server:
+#        git:
+#          uri: https://github.com/eric-souzams/sc-config-server.git
+#          clone-on-start: true
+#          default-label: main
+#
+#
+##        native:
+##          search-locations: "classpath:/config"
+##          search-locations: "file:///C://config"

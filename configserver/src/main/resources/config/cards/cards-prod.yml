@@ -1,0 +1,11 @@
+cards:
+  msg: "Welcome to the Bank Cards Prod application"
+  build-version: 1
+  mailDetails:
+    hostName: "default-prod@google.com"
+    port: 9012
+    from: "default-prod@google.com"
+    subject: "Your Card Details from Bank Prod Environment"
+  activeBranches[0]: "Hyderabad"
+  activeBranches[1]: "Paris"
+  activeBranches[2]: "NewYork"

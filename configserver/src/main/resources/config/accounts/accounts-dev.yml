@@ -1,0 +1,11 @@
+accounts:
+  msg: "Welcome to the Bank Accounts Dev application"
+  build-version: 2
+  mailDetails:
+    hostName: "dev-accounts@google.com"
+    port: 9020
+    from: "dev-accounts@google.com"
+    subject: "Your Account Details from Bank Dev Environment"
+  activeBranches[0]: "Chennai"
+  activeBranches[1]: "Berlin"
+  activeBranches[2]: "Indianapolis"

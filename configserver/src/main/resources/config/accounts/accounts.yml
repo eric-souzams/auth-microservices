@@ -1,0 +1,11 @@
+accounts:
+  msg: "Welcome to the Bank Accounts Default application"
+  build-version: 3
+  mailDetails:
+    hostName: "default-accounts@google.com"
+    port: 9000
+    from: "default-accounts@google.com"
+    subject: "Your Account Details from Bank Default Environment"
+  activeBranches[0]: "Mumbai"
+  activeBranches[1]: "London"
+  activeBranches[2]: "Washington"

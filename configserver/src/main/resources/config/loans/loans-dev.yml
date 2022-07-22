@@ -1,0 +1,11 @@
+loans:
+  msg: "Welcome to the Bank Loans Dev application"
+  build-version: 2
+  mailDetails:
+    hostName: "dev-loans@google.com"
+    port: 9021
+    from: "dev-loans@google.com"
+    subject: "Your Loan Details from Bank Dev Environment"
+  activeBranches[0]: "Chennai"
+  activeBranches[1]: "Berlin"
+  activeBranches[2]: "Indianapolis"

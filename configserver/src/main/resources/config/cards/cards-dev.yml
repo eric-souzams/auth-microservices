@@ -1,0 +1,11 @@
+cards:
+  msg: "Welcome to the Bank Cards Dev application"
+  build-version: 2
+  mailDetails:
+    hostName: "default-dev@google.com"
+    port: 9022
+    from: "default-dev@google.com"
+    subject: "Your Card Details from Bank Dev Environment"
+  activeBranches[0]: "Chennai"
+  activeBranches[1]: "Berlin"
+  activeBranches[2]: "Indianapolis"

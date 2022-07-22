@@ -1,0 +1,53 @@
+version: "3.8"
+
+services:
+  configserver:
+    image: configserver-bank
+    restart: always
+    ports:
+      - "8071:8071"
+    networks:
+      - auth-network
+
+  accounts:
+    image: accounts-bank
+    restart: always
+    ports:
+      - "8080:8080"
+    networks:
+      - auth-network
+    depends_on:
+      - configserver
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071
+
+  loans:
+    image: loans-bank
+    restart: always
+    ports:
+      - "8090:8090"
+    networks:
+      - auth-network
+    depends_on:
+      - configserver
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071
+
+  cards:
+    image: cards-bank
+    restart: always
+    ports:
+      - "9000:9000"
+    networks:
+      - auth-network
+    depends_on:
+      - configserver
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071
+
+networks:
+  auth-network:
+    driver: bridge

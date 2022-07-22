@@ -1,0 +1,11 @@
+accounts:
+  msg: "Welcome to the Bank Accounts Prod application"
+  build-version: 1
+  mailDetails:
+    hostName: "prod-accounts@google.com"
+    port: 9010
+    from: "prod-accounts@google.com"
+    subject: "Your Account Details from Bank Prod Environment"
+  activeBranches[0]: "Hyderabad"
+  activeBranches[1]: "Paris"
+  activeBranches[2]: "NewYork"

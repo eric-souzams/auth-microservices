@@ -1,0 +1,11 @@
+loans:
+  msg: "Welcome to the Bank Loans Default application"
+  build-version: 3
+  mailDetails:
+    hostName: "default-loans@google.com"
+    port: 9001
+    from: "default-loans@google.com"
+    subject: "Your Loan Details from Bank Default Environment"
+  activeBranches[0]: "Mumbai"
+  activeBranches[1]: "London"
+  activeBranches[2]: "Washington"
