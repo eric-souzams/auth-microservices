@@ -31,9 +31,26 @@ services:
       - auth-network
     depends_on:
       - configserver
+      - eurekaserver
     environment:
       SPRING_PROFILES_ACTIVE: default
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8071
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka
+
+  accounts1:
+    image: accounts-bank
+    restart: always
+    ports:
+      - "8081:8080"
+    networks:
+      - auth-network
+    depends_on:
+      - configserver
+      - eurekaserver
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka
 
   loans:
     image: loans-bank
@@ -44,9 +61,11 @@ services:
       - auth-network
     depends_on:
       - configserver
+      - eurekaserver
     environment:
       SPRING_PROFILES_ACTIVE: default
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8071
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka
 
   cards:
     image: cards-bank
@@ -57,9 +76,11 @@ services:
       - auth-network
     depends_on:
       - configserver
+      - eurekaserver
     environment:
       SPRING_PROFILES_ACTIVE: default
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8071
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka
 
 networks:
   auth-network:
