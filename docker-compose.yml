@@ -9,6 +9,19 @@ services:
     networks:
       - auth-network
 
+  eurekaserver:
+    image: eurekaserver-bank
+    restart: always
+    ports:
+      - "8070:8070"
+    networks:
+      - auth-network
+    depends_on:
+      - configserver
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071
+
   accounts:
     image: accounts-bank
     restart: always

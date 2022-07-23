@@ -6,6 +6,8 @@ import com.bank.loans.services.LoanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class LoanServiceImpl implements LoanService {
 
@@ -13,8 +15,7 @@ public class LoanServiceImpl implements LoanService {
     private LoanRepository loanRepository;
 
     @Override
-    public Loan findByCustomerId(Long customerId) {
-        return loanRepository.findByCustomerIdOrderByStartDateDesc(customerId)
-                .orElseThrow(() -> new RuntimeException("Customer not found"));
+    public List<Loan> findByCustomerId(Long customerId) {
+        return loanRepository.findByCustomerIdOrderByStartDateDesc(customerId);
     }
 }

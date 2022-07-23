@@ -29,9 +29,34 @@ spring:
       hibernate:
         format_sql: true
 
+endpoints:
+  shutdown:
+    enabled: true
+
 management:
+  info:
+    env:
+      enabled: true
+  endpoint:
+    shutdown:
+      enabled: true
   endpoints:
     enabled-by-default: true
     web:
       exposure:
         include: "*"
+
+eureka:
+  instance:
+    preferIpAddress: true
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8070/eureka
+
+info:
+  app:
+    name: "Cards Microservice"
+    version: 1.0.0
+    description: "Bank Card Microservice"

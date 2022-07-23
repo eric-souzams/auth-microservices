@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/loans")
 public class LoanController {
@@ -25,8 +27,8 @@ public class LoanController {
     private LoansServiceConfig loansServiceConfig;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Loan> getLoanDetails(@PathVariable("id") Long customerId) {
-        Loan customer = loanService.findByCustomerId(customerId);
+    public ResponseEntity<List<Loan>> getLoanDetails(@PathVariable("id") Long customerId) {
+        List<Loan> customer = loanService.findByCustomerId(customerId);
 
         return ResponseEntity.ok(customer);
     }
