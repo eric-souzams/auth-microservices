@@ -60,3 +60,42 @@ info:
     name: "Accounts Microservice"
     version: 1.0.0
     description: "Bank Account Microservice"
+
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true
+    instances:
+      detailsForCustomerSupportApp:
+        minimumNumberOfCalls: 5
+        failureRateThreshold: 50
+        waitDurationInOpenState: 30000
+        permittedNumberOfCallsInHalfOpenState: 2
+
+  retry:
+    configs:
+      default:
+        registerHealthIndicator: true
+    instances:
+      retryForCustomerDetails:
+        maxRetryAttempts: 3
+        waitDuration: 2000
+
+  ratelimiter:
+    configs:
+      default:
+        registerHealthIndicator: true
+    instances:
+      rateLimiterForCustomerDetails:
+        timeoutDuration: 5000
+        limitForPeriod: 1
+        limitRefreshPeriod: 5000
+
+  bulkhead:
+    configs:
+      default:
+        registerHealthIndicator: true
+    instances:
+      bulkheadForCustomerDetails:
+        maxConcurrentCalls: 10
