@@ -1,17 +1,15 @@
-package com.bank.loans;
+package com.bank.gatewayserver;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
-@RefreshScope
 @EnableEurekaClient
 @SpringBootApplication
-public class LoansApplication {
+public class GatewayserverApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(LoansApplication.class, args);
+		SpringApplication.run(GatewayserverApplication.class, args);
 	}
 
 }

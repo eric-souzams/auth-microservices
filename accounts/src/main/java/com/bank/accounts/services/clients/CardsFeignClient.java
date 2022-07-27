@@ -2,9 +2,9 @@ package com.bank.accounts.services.clients;
 
 import com.bank.accounts.models.Card;
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestHeader;
 
 import java.util.List;
 
@@ -12,6 +12,6 @@ import java.util.List;
 public interface CardsFeignClient {
 
     @GetMapping(value = "/api/cards/{id}")
-    List<Card> getCardDetails(@PathVariable("id") Long customerId);
+    List<Card> getCardDetails(@RequestHeader("bank-correlation-id") String correlationId, @PathVariable("id") Long customerId);
 
 }

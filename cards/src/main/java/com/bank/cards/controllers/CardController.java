@@ -9,10 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,7 +24,7 @@ public class CardController {
     private CardsServiceConfig cardsServiceConfig;
 
     @GetMapping("/{id}")
-    public ResponseEntity<List<Card>> getCardDetails(@PathVariable("id") Long customerId) {
+    public ResponseEntity<List<Card>> getCardDetails(@RequestHeader("bank-correlation-id") String correlationId, @PathVariable("id") Long customerId) {
         List<Card> cards = cardService.findByCustomerId(customerId);
 
         return ResponseEntity.ok(cards);

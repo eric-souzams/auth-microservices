@@ -35,9 +35,11 @@ This project was developed using the following technologies:
 - [Spring Cloud Config Client]()
 - [Spring Cloud Netflix Eureka Server]()
 - [Spring Cloud Netflix Eureka Client]()
-- [Spring Cloud Circuit Breaker - Resilience4j]()
+- [Spring Cloud Circuit Breaker - Resilience4J]()
+- [Spring Cloud Gateway]()
 - [Spring Cloud Sleuth]()
 - [Zipkin]()
+- [Open Feign]()
 - [H2 Database]()
 
 

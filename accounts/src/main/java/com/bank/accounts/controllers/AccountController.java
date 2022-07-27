@@ -15,10 +15,7 @@ import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -41,19 +38,19 @@ public class AccountController {
 
     @GetMapping("/{id}")
     @Bulkhead(name = "bulkheadForCustomerDetails", fallbackMethod = "fallbackDetailsForCustomerSupportApp")
-    public ResponseEntity<Account> getAccount(@PathVariable("id") Long customerId) {
+    public ResponseEntity<Account> getAccount(@RequestHeader("bank-correlation-id") String correlationId, @PathVariable("id") Long customerId) {
         Account account = accountService.findAccountByCustomerId(customerId);
 
         return ResponseEntity.ok(account);
     }
 
     @GetMapping("/my-account/{id}")
-//    @CircuitBreaker(name = "detailsForCustomerSupportApp", fallbackMethod = "fallbackDetailsForCustomerSupportApp")
+    @CircuitBreaker(name = "detailsForCustomerSupportApp", fallbackMethod = "fallbackDetailsForCustomerSupportApp")
     @Retry(name = "retryForCustomerDetails", fallbackMethod = "fallbackDetailsForCustomerSupportApp")
-    public ResponseEntity<AccountDetailsDto> myAccountDetails(@PathVariable("id") Long customerId) {
+    public ResponseEntity<AccountDetailsDto> myAccountDetails(@RequestHeader("bank-correlation-id") String correlationId, @PathVariable("id") Long customerId) {
         Account account = accountService.findAccountByCustomerId(customerId);
-        List<Loan> loans = loansFeignClient.getLoanDetails(customerId);
-        List<Card> cards = cardsFeignClient.getCardDetails(customerId);
+        List<Loan> loans = loansFeignClient.getLoanDetails(correlationId, customerId);
+        List<Card> cards = cardsFeignClient.getCardDetails(correlationId, customerId);
 
         AccountDetailsDto response = AccountDetailsDto.builder()
                 .account(account)

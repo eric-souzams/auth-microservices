@@ -22,6 +22,24 @@ services:
       SPRING_PROFILES_ACTIVE: default
       SPRING_CONFIG_IMPORT: configserver:http://configserver:8071
 
+  gatewayserver:
+    image: gatewayserver-bank
+    restart: always
+    ports:
+      - "8072:8072"
+    networks:
+      - auth-network
+    depends_on:
+      - configserver
+      - eurekaserver
+      - cards
+      - loans
+      - accounts
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka
+
   accounts:
     image: accounts-bank
     restart: always
