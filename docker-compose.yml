@@ -1,104 +1,148 @@
 version: "3.8"
 
 services:
-  configserver:
-    image: configserver-bank
+  prometheus:
+    image: prom/prometheus:latest
     restart: always
     ports:
-      - "8071:8071"
+      - 9090:9090
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
     networks:
       - auth-network
 
-  eurekaserver:
-    image: eurekaserver-bank
+  grafana:
+    image: grafana/grafana:latest
     restart: always
     ports:
-      - "8070:8070"
+      - 3000:3000
     networks:
       - auth-network
     depends_on:
-      - configserver
+      - prometheus
     environment:
-      SPRING_PROFILES_ACTIVE: default
-      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=password
 
-  gatewayserver:
-    image: gatewayserver-bank
+  rabbitmq:
+    image: rabbitmq:3.8.14-management
     restart: always
     ports:
-      - "8072:8072"
+      - 5672:5672
+      - 15672:15672
     networks:
       - auth-network
-    depends_on:
-      - configserver
-      - eurekaserver
-      - cards
-      - loans
-      - accounts
-    environment:
-      SPRING_PROFILES_ACTIVE: default
-      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka
 
-  accounts:
-    image: accounts-bank
+  zipkinserver:
+    image: openzipkin/zipkin:2.23.2
     restart: always
     ports:
-      - "8080:8080"
+      - 9411:9411
+    depends_on:
+      - rabbitmq
+    environment:
+        RABBIT_URI: amqp://guest:guest@rabbitmq:5672
     networks:
       - auth-network
-    depends_on:
-      - configserver
-      - eurekaserver
-    environment:
-      SPRING_PROFILES_ACTIVE: default
-      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka
 
-  accounts1:
-    image: accounts-bank
-    restart: always
-    ports:
-      - "8081:8080"
-    networks:
-      - auth-network
-    depends_on:
-      - configserver
-      - eurekaserver
-    environment:
-      SPRING_PROFILES_ACTIVE: default
-      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka
-
-  loans:
-    image: loans-bank
-    restart: always
-    ports:
-      - "8090:8090"
-    networks:
-      - auth-network
-    depends_on:
-      - configserver
-      - eurekaserver
-    environment:
-      SPRING_PROFILES_ACTIVE: default
-      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka
-
-  cards:
-    image: cards-bank
-    restart: always
-    ports:
-      - "9000:9000"
-    networks:
-      - auth-network
-    depends_on:
-      - configserver
-      - eurekaserver
-    environment:
-      SPRING_PROFILES_ACTIVE: default
-      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071
-      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka
+#  configserver:
+#    image: configserver-bank
+#    restart: always
+#    ports:
+#      - "8071:8071"
+#    networks:
+#      - auth-network
+#
+#  eurekaserver:
+#    image: eurekaserver-bank
+#    restart: always
+#    ports:
+#      - "8070:8070"
+#    networks:
+#      - auth-network
+#    depends_on:
+#      - configserver
+#    environment:
+#      SPRING_PROFILES_ACTIVE: default
+#      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071
+#
+#  gatewayserver:
+#    image: gatewayserver-bank
+#    restart: always
+#    ports:
+#      - "8072:8072"
+#    networks:
+#      - auth-network
+#    depends_on:
+#      - configserver
+#      - eurekaserver
+#      - cards
+#      - loans
+#      - accounts
+#    environment:
+#      SPRING_PROFILES_ACTIVE: default
+#      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071
+#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka
+#
+#  accounts:
+#    image: accounts-bank
+#    restart: always
+#    ports:
+#      - "8080:8080"
+#    networks:
+#      - auth-network
+#    depends_on:
+#      - configserver
+#      - eurekaserver
+#    environment:
+#      SPRING_PROFILES_ACTIVE: default
+#      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071
+#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka
+#
+#  accounts1:
+#    image: accounts-bank
+#    restart: always
+#    ports:
+#      - "8081:8080"
+#    networks:
+#      - auth-network
+#    depends_on:
+#      - configserver
+#      - eurekaserver
+#    environment:
+#      SPRING_PROFILES_ACTIVE: default
+#      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071
+#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka
+#
+#  loans:
+#    image: loans-bank
+#    restart: always
+#    ports:
+#      - "8090:8090"
+#    networks:
+#      - auth-network
+#    depends_on:
+#      - configserver
+#      - eurekaserver
+#    environment:
+#      SPRING_PROFILES_ACTIVE: default
+#      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071
+#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka
+#
+#  cards:
+#    image: cards-bank
+#    restart: always
+#    ports:
+#      - "9000:9000"
+#    networks:
+#      - auth-network
+#    depends_on:
+#      - configserver
+#      - eurekaserver
+#    environment:
+#      SPRING_PROFILES_ACTIVE: default
+#      SPRING_CONFIG_IMPORT: configserver:http://configserver:8071
+#      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8070/eureka
 
 networks:
   auth-network:

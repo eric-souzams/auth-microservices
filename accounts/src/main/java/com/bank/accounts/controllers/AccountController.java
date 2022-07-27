@@ -12,6 +12,9 @@ import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
+import io.micrometer.core.annotation.Timed;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +30,8 @@ import java.util.Map;
 @RequestMapping("/api/accounts")
 public class AccountController {
 
+    private static final Logger logger = LoggerFactory.getLogger(AccountController.class);
+
     @Autowired
     private AccountService accountService;
     @Autowired
@@ -38,7 +43,8 @@ public class AccountController {
 
     @GetMapping("/{id}")
     @Bulkhead(name = "bulkheadForCustomerDetails", fallbackMethod = "fallbackDetailsForCustomerSupportApp")
-    public ResponseEntity<Account> getAccount(@RequestHeader("bank-correlation-id") String correlationId, @PathVariable("id") Long customerId) {
+    @Timed(value = "getAccountDetails.time", description = "Time taken to return Account Details")
+    public ResponseEntity<Account> getAccountDetails(@PathVariable("id") Long customerId) {
         Account account = accountService.findAccountByCustomerId(customerId);
 
         return ResponseEntity.ok(account);
@@ -47,7 +53,9 @@ public class AccountController {
     @GetMapping("/my-account/{id}")
     @CircuitBreaker(name = "detailsForCustomerSupportApp", fallbackMethod = "fallbackDetailsForCustomerSupportApp")
     @Retry(name = "retryForCustomerDetails", fallbackMethod = "fallbackDetailsForCustomerSupportApp")
-    public ResponseEntity<AccountDetailsDto> myAccountDetails(@RequestHeader("bank-correlation-id") String correlationId, @PathVariable("id") Long customerId) {
+    public ResponseEntity<AccountDetailsDto> myAccountDetails(@RequestHeader("bank-correlation-id") String correlationId,
+                                                              @PathVariable("id") Long customerId) {
+        logger.info("method myAccountDetails started");
         Account account = accountService.findAccountByCustomerId(customerId);
         List<Loan> loans = loansFeignClient.getLoanDetails(correlationId, customerId);
         List<Card> cards = cardsFeignClient.getCardDetails(correlationId, customerId);
@@ -58,6 +66,7 @@ public class AccountController {
                 .loans(loans)
                 .build();
 
+        logger.info("method myAccountDetails ended");
         return ResponseEntity.ok(response);
     }
 

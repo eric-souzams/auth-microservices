@@ -7,6 +7,8 @@ import com.bank.loans.services.impl.LoansServiceConfig;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,8 @@ import java.util.List;
 @RequestMapping("/api/loans")
 public class LoanController {
 
+    private static final Logger logger = LoggerFactory.getLogger(LoanController.class);
+
     @Autowired
     private LoanService loanService;
 
@@ -24,9 +28,12 @@ public class LoanController {
     private LoansServiceConfig loansServiceConfig;
 
     @GetMapping("/{id}")
-    public ResponseEntity<List<Loan>> getLoanDetails(@RequestHeader("bank-correlation-id") String correlationId, @PathVariable("id") Long customerId) {
+    public ResponseEntity<List<Loan>> getLoanDetails(@RequestHeader("bank-correlation-id") String correlationId,
+                                                     @PathVariable("id") Long customerId) {
+        logger.info("method getLoanDetails started");
         List<Loan> customer = loanService.findByCustomerId(customerId);
 
+        logger.info("method getLoanDetails ended");
         return ResponseEntity.ok(customer);
     }
 
