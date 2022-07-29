@@ -1,28 +1,41 @@
 version: "3.8"
 
 services:
-  prometheus:
-    image: prom/prometheus:latest
+  keycloak:
+    image: quay.io/keycloak/keycloak:19.0.0
     restart: always
     ports:
-      - 9090:9090
-    volumes:
-      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - "7080:8080"
     networks:
       - auth-network
-
-  grafana:
-    image: grafana/grafana:latest
-    restart: always
-    ports:
-      - 3000:3000
-    networks:
-      - auth-network
-    depends_on:
-      - prometheus
     environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=password
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    command:
+      - start-dev
+
+#  prometheus:
+#    image: prom/prometheus:latest
+#    restart: always
+#    ports:
+#      - 9090:9090
+#    volumes:
+#      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+#    networks:
+#      - auth-network
+#
+#  grafana:
+#    image: grafana/grafana:latest
+#    restart: always
+#    ports:
+#      - 3000:3000
+#    networks:
+#      - auth-network
+#    depends_on:
+#      - prometheus
+#    environment:
+#      - GF_SECURITY_ADMIN_USER=admin
+#      - GF_SECURITY_ADMIN_PASSWORD=password
 
   rabbitmq:
     image: rabbitmq:3.8.14-management
