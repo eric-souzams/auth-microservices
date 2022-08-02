@@ -41,6 +41,9 @@ This project was developed using the following technologies:
 - [Zipkin]()
 - [Open Feign]()
 - [H2 Database]()
+- [Keycloak]()
+- [Prometheus]()
+- [Grafana]()
 
 
 ## Building
